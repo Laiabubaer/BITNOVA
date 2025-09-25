@@ -35,7 +35,110 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
   <style>
-    /* نفس الـ CSS السابق بدون تغيير */
+    :root{
+      --container:1200px;
+      --brand:#0a1f44;
+      --hero-bg:#121624;
+      --muted:#556070;
+      --trust:#22c55e;
+      --card:#ffffff;
+      --border:#e5e7eb;
+      --shadow:0 8px 24px rgba(0,0,0,.08);
+      --ink:#0f172a;
+      --up:#22c55e; --down:#ef4444;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Arial,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#fff;color:var(--ink)}
+
+    /* Navbar */
+    nav{background:#000;color:#fff;position:sticky;top:0;z-index:50}
+    .nav-container{max-width:var(--container);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;gap:16px}
+    .logo-text{font-weight:800;font-size:18px;letter-spacing:.3px;color:#fff;display:flex;align-items:center;gap:8px}
+    .logo-text i{color:#60a5fa}
+    .menu-toggle{display:none;flex-direction:column;cursor:pointer}
+    .menu-toggle div{width:25px;height:3px;background:#fff;margin:4px 0;border-radius:2px}
+    .nav-links{display:flex;gap:18px}
+    .nav-links a{color:#fff;text-decoration:none;font-size:14px;opacity:.92;display:inline-flex;align-items:center;gap:6px}
+    .nav-links a:hover{opacity:1}
+    @media (max-width:768px){
+      .menu-toggle{display:flex}
+      .nav-links{display:none;position:absolute;top:56px;right:20px;background:#000;flex-direction:column;width:200px;padding:10px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+      .nav-links.show{display:flex}
+      .nav-links a{padding:10px;border-bottom:1px solid #222}
+      .nav-links a:last-child{border-bottom:none}
+    }
+
+    /* Trust bar */
+    .trust-bar{background:#0b1228;color:#cbd5e1;font-size:13px;border-top:1px solid #0f172a;border-bottom:1px solid #0f172a}
+    .trust-wrap{max-width:var(--container);margin:0 auto;padding:8px 20px;display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+    .trust-item{display:inline-flex;align-items:center;gap:8px}
+    .trust-item i{color:var(--trust)}
+
+    /* Hero */
+    .hero{background:radial-gradient(1200px 500px at 50% -10%, #1b2140, transparent 70%), var(--hero-bg);color:#fff;text-align:center;padding:84px 20px 70px}
+    .hero-content{max-width:900px;margin:0 auto}
+    .hero h1{font-size:36px;margin:0 0 10px;display:flex;gap:10px;align-items:center;justify-content:center}
+    .hero h1 i{color:#60a5fa}
+    .hero p{font-size:16px;color:#d7d7d7;margin:0 auto 22px;max-width:720px;line-height:1.7}
+    .store-badges{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+    .store-badges img{height:56px;display:block;transition:transform .25s}
+    .store-badges img:hover{transform:scale(1.04)}
+
+    /* Sections */
+    section{padding:54px 20px}
+    .container{max-width:var(--container);margin:0 auto}
+    .section-head{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 10px}
+    .section-head i{color:var(--brand)}
+    h2.section-title{text-align:center;font-size:26px;color:var(--brand);margin:0}
+    p.section-sub{color:var(--muted);text-align:center;max-width:760px;margin:8px auto 28px;line-height:1.7}
+
+    /* Cards */
+    .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    @media (max-width:1000px){.cards{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:600px){.cards{grid-template-columns:1fr}}
+    .card{border:1px solid var(--border);border-radius:14px;padding:18px;background:var(--card);box-shadow:var(--shadow);transition:transform .2s, box-shadow .2s, border-color .2s;opacity:0;transform:translateY(14px)}
+    .card h3{margin:0 0 8px;font-size:18px;color:#111;display:flex;align-items:center;gap:8px}
+    .card h3 i{color:var(--brand)}
+    .card p{margin:0;color:#475569;line-height:1.6}
+    .card:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(0,0,0,.1);border-color:#d1d5db}
+    .in-view{opacity:1 !important;transform:translateY(0) !important;transition:opacity .5s ease, transform .5s ease}
+
+    /* Multisig band */
+    .band{margin-top:28px;background:#f1f5f9;border-left:5px solid #2563eb;border-radius:14px;padding:26px 20px;text-align:center}
+    .band h3{margin:0 0 8px;font-size:20px;color:#1e3a8a;display:inline-flex;align-items:center;gap:8px}
+    .band h3 i{color:#2563eb}
+    .band p{margin:0;color:#374151}
+
+    /* BTC widget */
+    .btc-inline{padding:0 20px 32px;background:#fff}
+    .btc-wrap{max-width:900px;margin:-20px auto 0}
+    .btc-card{
+      border:1px solid rgba(148,163,184,.25);
+      background:rgba(15,23,42,.6);
+      color:#e5e7eb;
+      border-radius:18px;
+      padding:14px 16px;
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      box-shadow:0 18px 40px rgba(0,0,0,.12);
+    }
+    .btc-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .btc-left{display:flex;align-items:center;gap:12px}
+    .btc-coin{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:999px;background:#0f172a;border:1px solid rgba(148,163,184,.25)}
+    .btc-price{font-weight:800;font-size:20px;letter-spacing:.2px}
+    .btc-change{font-weight:700;font-size:12px;padding:4px 8px;border-radius:8px;border:1px solid transparent;display:inline-flex;align-items:center;gap:6px}
+    .up{background:rgba(34,197,94,.12);color:var(--up);border-color:rgba(34,197,94,.35)}
+    .down{background:rgba(239,68,68,.12);color:var(--down);border-color:rgba(239,68,68,.35)}
+    .btc-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+    .btc-time{font-size:12px;opacity:.85}
+    .btc-chart{height:60px;margin-top:8px}
+    #btcSpark{width:100%;height:60px}
+
+    /* Footer */
+    footer{background:#0f172a;text-align:center;padding:24px 16px;font-size:14px;color:#cbd5e1}
+    .footer-links{display:flex;gap:16px;justify-content:center;align-items:center;margin-top:6px;font-size:13px}
+    .footer-links span{display:inline-flex;align-items:center;gap:6px;opacity:.9}
+    .footer-links i{color:#94a3b8}
   </style>
 </head>
 <body>
@@ -81,7 +184,22 @@
 
   <!-- BTC widget -->
   <section class="btc-inline">
-    <!-- نفس الكود السابق -->
+    <div class="btc-wrap">
+      <div class="btc-card">
+        <div class="btc-top">
+          <div class="btc-left">
+            <div class="btc-coin"><i class="fa-brands fa-bitcoin"></i></div>
+            <div class="btc-price" id="btcPrice">$--</div>
+          </div>
+          <div class="btc-change" id="btcChange">--%</div>
+        </div>
+        <div class="btc-bottom">
+          <small class="btc-time" id="btcTime">Initializing…</small>
+          <small class="btc-time">USD</small>
+        </div>
+        <div class="btc-chart"><canvas id="btcSpark"></canvas></div>
+      </div>
+    </div>
   </section>
 
   <!-- Features -->
@@ -141,14 +259,4 @@
   <!-- Footer -->
   <footer>
     <div class="footer-links">
-      <span><i class="fa-solid fa-user-shield"></i> <a href="privacy.html" style="color:#cbd5e1;text-decoration:none">Privacy</a></span>
-      <span><i class="fa-solid fa-file-contract"></i> <a href="terms.html" style="color:#cbd5e1;text-decoration:none">Terms</a></span>
-      <span><i class="fa-solid fa-envelope"></i> <a href="contact.html" style="color:#cbd5e1;text-decoration:none">Contact</a></span>
-    </div>
-  </footer>
-
-  <script>
-    /* نفس سكربت القائمة + BTC ticker السابق */
-  </script>
-</body>
-</html>
+      <span><i class="fa-solid fa-user-shield"></i> <a href="privacy.html" style="color:#cbd5e1;text-decoration:none">Privacy</a
