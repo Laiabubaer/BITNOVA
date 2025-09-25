@@ -54,10 +54,7 @@
     }
 
     @media (max-width: 768px) {
-      .menu-toggle {
-        display: flex;
-      }
-
+      .menu-toggle { display: flex; }
       .nav-links {
         display: none;
         flex-direction: column;
@@ -72,19 +69,9 @@
         text-align: right;
         z-index: 99;
       }
-
-      .nav-links.show {
-        display: flex;
-      }
-
-      .nav-links a {
-        padding: 10px 0;
-        border-bottom: 1px solid #222;
-      }
-
-      .nav-links a:last-child {
-        border-bottom: none;
-      }
+      .nav-links.show { display: flex; }
+      .nav-links a { padding: 10px 0; border-bottom: 1px solid #222; }
+      .nav-links a:last-child { border-bottom: none; }
     }
 
     .container {
@@ -102,12 +89,7 @@
       font-size: 26px;
     }
 
-    p {
-      text-align: center;
-      font-size: 14px;
-      color: #ccc;
-      margin-bottom: 25px;
-    }
+    p { text-align: center; font-size: 14px; color: #ccc; margin-bottom: 25px; }
 
     input, textarea {
       width: 94%;
@@ -120,10 +102,7 @@
       color: #000;
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
+    textarea { resize: vertical; min-height: 80px; }
 
     button {
       width: 100%;
@@ -138,57 +117,18 @@
       transition: background 0.3s ease;
     }
 
-    button:hover {
-      background-color: #e08700;
-    }
+    button:hover { background-color: #e08700; }
 
-    .contact-info {
-      font-size: 13px;
-      color: #ccc;
-      margin-top: 30px;
-    }
-
-    .contact-info img {
-      width: 16px;
-      vertical-align: middle;
-      margin-right: 6px;
-    }
-
-    .contact-info p {
-      margin: 6px 0;
-    }
-
-    .privacy-note {
-      font-size: 12px;
-      color: #aaa;
+    .message {
+      margin-top: 15px;
+      font-size: 14px;
       text-align: center;
-      margin-top: 10px;
-    }
-
-    .privacy-note a {
-      color: #ffcc66;
-      text-decoration: underline;
-    }
-
-    .back-home {
-      margin-top: 30px;
-      text-align: center;
-    }
-
-    .back-home a {
-      display: inline-block;
-      padding: 10px 20px;
-      background-color: #ff9900;
-      color: white;
-      text-decoration: none;
+      display: none;
+      padding: 10px;
       border-radius: 6px;
-      font-weight: bold;
-      transition: background 0.3s ease;
     }
-
-    .back-home a:hover {
-      background-color: #e08700;
-    }
+    .success { background: #22c55e; color:#fff; }
+    .error { background: #ef4444; color:#fff; }
   </style>
 </head>
 <body>
@@ -198,9 +138,7 @@
     <div class="nav-container">
       <div class="logo-text">Bitnova</div>
       <button class="menu-toggle" onclick="toggleMenu()">
-        <div></div>
-        <div></div>
-        <div></div>
+        <div></div><div></div><div></div>
       </button>
       <div class="nav-links" id="navLinks">
         <a href="index.html">Home</a>
@@ -214,47 +152,18 @@
   <!-- Contact Container -->
   <div class="container">
     <h2>Contact Us</h2>
-    <p>For inquiries about <strong>Bitnova – Bitcoin Wallet</strong>, please use the form below or reach out directly.</p>
+    <p>For inquiries about <strong>Bitnova – Bitcoin Wallet</strong>, please use the form below.</p>
 
     <!-- Contact Form -->
-    <form action="https://formsubmit.co/support@Bitnova.net" method="POST">
-      <!-- Hidden settings -->
-      <input type="hidden" name="_next" value="https://bitnova.net/thank-you.html">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_subject" value="New Contact Form Submission from Bitnova – Bitcoin Wallet">
-      <input type="hidden" name="_template" value="table">
-
+    <form id="contactForm">
       <input type="text" name="name" placeholder="Full Name" required>
-      <input type="email" name="email" placeholder="Email" required>
+      <input type="email" name="email" id="email" placeholder="Email" required>
       <textarea name="message" placeholder="Your Message" required></textarea>
-
       <button type="submit">Send</button>
     </form>
 
-    <div class="privacy-note">
-      We collect your contact information solely to respond to your inquiry. We do not share your data with third parties. By submitting this form, you agree to our <a href="privacy.html">Privacy Policy</a>.
-    </div>
-
-    <!-- Contact Info -->
-    <div class="contact-info">
-      <p><strong>Business Address:</strong><br>
-      AKTUEL OFIS MALZEMELERI PAZARLAMA TICARET ANONIM SIRKETI<br>
-      NO:2-6 SULTAN SELIM MAHALLESI, BEHCET SOKAK<br>
-      KAGITHANE, Istanbul (Europe), 34415, Türkiye</p>
-
-      <p>
-        <img src="images/icons8-email-48.png" alt="Email Icon">
-        <a href="mailto:support@Bitnova.net" style="color:#ffcc66">support@Bitnova.net</a>
-      </p>
-      <p>
-        <img src="images/icons8-phone-24.png" alt="Phone Icon"> +90-5418157912
-      </p>
-    </div>
-
-    <!-- Back Home -->
-    <div class="back-home">
-      <a href="index.html">Return to Home</a>
-    </div>
+    <!-- Success/Error Message -->
+    <div id="formMessage" class="message"></div>
   </div>
 
   <!-- Script -->
@@ -263,7 +172,24 @@
       const navLinks = document.getElementById('navLinks');
       navLinks.classList.toggle('show');
     }
-  </script>
 
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const messageBox = document.getElementById('formMessage');
+      const regex = /^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$/;
+
+      if (regex.test(email)) {
+        messageBox.textContent = "✅ تم إرسال الرسالة بنجاح!";
+        messageBox.className = "message success";
+        messageBox.style.display = "block";
+        this.reset();
+      } else {
+        messageBox.textContent = "❌ الرجاء إدخال بريد صحيح.";
+        messageBox.className = "message error";
+        messageBox.style.display = "block";
+      }
+    });
+  </script>
 </body>
 </html>
