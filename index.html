@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Safex : Bitcoin Wallet & Crypto | Secure & Fast</title>
+  <meta name="description" content="Safex is a self-custodial Bitcoin wallet — privacy-first, secure, and built for speed. Manage multiple wallets, send & receive BTC, and stay in full control."/>
+  <meta name="keywords" content="Safex, Bitcoin Wallet, Crypto Wallet, Self Custody, BTC, Seed Phrase, Non-Custodial"/>
+  <meta name="author" content="A BOUQUET OF BALLOONS LLC"/>
+  <meta property="og:title" content="Safex : Bitcoin Wallet & Crypto"/>
+  <meta property="og:description" content="Self-custodial Bitcoin wallet. Privacy-first, secure, and fast."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://www.safex.club"/>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Safex : Bitcoin Wallet & Crypto","applicationCategory":"FinanceApplication","operatingSystem":"iOS, Android","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"A BOUQUET OF BALLOONS LLC"}}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    /* Hero */
+    .hero{background:var(--hero-bg);position:relative;overflow:hidden;padding:96px 24px 88px;text-align:center;color:#fff}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 900px 500px at 50% -60px,rgba(247,147,26,.17) 0%,transparent 70%);pointer-events:none}
+    .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(247,147,26,.45),transparent)}
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(247,147,26,.1);border:1px solid rgba(247,147,26,.25);color:var(--orange);font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin-bottom:22px}
+    .hero h1{font-size:clamp(32px,5.5vw,60px);font-weight:800;line-height:1.1;letter-spacing:-.5px;margin-bottom:18px;max-width:820px;margin-left:auto;margin-right:auto}
+    .hero h1 .accent{color:var(--orange)}
+    .hero-sub{font-size:clamp(15px,2vw,18px);color:#94a3b8;max-width:600px;margin:0 auto 36px;line-height:1.75}
+    .hero-cta{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:52px}
+    .hero-badges{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:52px}
+    .hero-badge-item{display:flex;align-items:center;gap:8px;color:#94a3b8;font-size:13px}
+    .hero-badge-item i{color:var(--orange)}
+    /* BTC card */
+    .btc-card{max-width:460px;margin:0 auto;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px 20px;backdrop-filter:blur(12px);text-align:left}
+    .btc-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .btc-left{display:flex;align-items:center;gap:12px}
+    .btc-icon{width:40px;height:40px;border-radius:999px;background:var(--orange);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .btc-icon i{color:#000;font-size:18px}
+    .btc-lbl{font-size:11px;color:#64748b;font-weight:500}
+    .btc-price-val{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.3px}
+    .btc-badge{font-size:12px;font-weight:700;padding:5px 10px;border-radius:8px;display:inline-flex;align-items:center;gap:5px}
+    .badge-up{background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.3)}
+    .badge-down{background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+    .btc-chart-wrap{margin-top:12px;height:56px}
+    #sparkCanvas{width:100%!important;height:56px!important}
+    .btc-foot{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:#475569}
+    /* Stats */
+    .stats-bar{background:#f8fafc;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:32px 24px}
+    .stats-grid{max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+    @media(max-width:700px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+    .stat-item{text-align:center;padding:10px}
+    .stat-num{font-size:34px;font-weight:800;color:var(--orange);letter-spacing:-.5px;line-height:1}
+    .stat-lbl{font-size:13px;color:var(--muted);margin-top:5px;font-weight:500}
+    /* Features */
+    .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    @media(max-width:900px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:560px){.feat-grid{grid-template-columns:1fr}}
+    .feat-card{border:1px solid var(--border);border-radius:var(--radius);padding:24px;background:#fff;box-shadow:var(--shadow);transition:all .25s}
+    .feat-card:hover{border-color:var(--orange-glow);box-shadow:0 12px 40px rgba(247,147,26,.09);transform:translateY(-3px)}
+    .feat-icon{width:44px;height:44px;border-radius:12px;background:var(--orange-dim);border:1px solid var(--orange-glow);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+    .feat-icon i{color:var(--orange);font-size:18px}
+    .feat-card h3{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px}
+    .feat-card p{font-size:14px;color:var(--muted);line-height:1.65}
+    /* How it works */
+    .how-bg{background:#f8fafc;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+    @media(max-width:700px){.steps{grid-template-columns:1fr}}
+    .step{text-align:center;padding:32px 24px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .step-num{width:46px;height:46px;border-radius:999px;background:var(--orange);color:#000;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+    .step h3{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:8px}
+    .step p{font-size:14px;color:var(--muted);line-height:1.65}
+    /* Security split */
+    .sec-split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+    @media(max-width:800px){.sec-split{grid-template-columns:1fr;gap:32px}}
+    .sec-vis{background:linear-gradient(135deg,#0c0f1a,#101520);border:1px solid rgba(247,147,26,.2);border-radius:20px;padding:36px 28px;display:flex;flex-direction:column;gap:20px}
+    .sec-row{display:flex;align-items:flex-start;gap:14px}
+    .sec-dot{width:38px;height:38px;border-radius:10px;background:var(--orange-dim);border:1px solid var(--orange-glow);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .sec-dot i{color:var(--orange);font-size:15px}
+    .sec-row-text h4{font-size:14px;font-weight:700;color:#e2e8f0;margin-bottom:3px}
+    .sec-row-text p{font-size:13px;color:#64748b;line-height:1.6}
+    /* Testimonials */
+    .reviews-bg{background:#fff;border-top:1px solid var(--border)}
+    .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    @media(max-width:900px){.reviews-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:560px){.reviews-grid{grid-template-columns:1fr}}
+    .review-card{border:1px solid var(--border);border-radius:var(--radius);padding:22px;background:#fff;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px;transition:all .25s}
+    .review-card:hover{border-color:var(--orange-glow);box-shadow:0 10px 32px rgba(247,147,26,.08)}
+    .review-top{display:flex;align-items:center;gap:12px}
+    .review-avatar{width:44px;height:44px;border-radius:999px;object-fit:cover;border:2px solid var(--orange-dim);flex-shrink:0}
+    .review-name{font-weight:700;font-size:14px;color:var(--ink)}
+    .review-loc{font-size:12px;color:var(--muted)}
+    .review-stars{color:var(--orange);font-size:13px;letter-spacing:1px}
+    .review-text{font-size:14px;color:#374151;line-height:1.65;font-style:italic}
+    .review-source{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px}
+    .review-source i{color:var(--orange)}
+    /* CTA */
+    .cta-section{background:linear-gradient(135deg,#0c0f1a,#111827);text-align:center;color:#fff;border-top:1px solid rgba(247,147,26,.2)}
+    .cta-section h2{font-size:clamp(26px,4vw,44px);font-weight:800;letter-spacing:-.4px;margin-bottom:14px}
+    .cta-section h2 span{color:var(--orange)}
+    .cta-section p{color:#94a3b8;font-size:16px;margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto}
+    .store-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+    .store-row img{height:50px;display:block;transition:transform .25s}
+    .store-row img:hover{transform:scale(1.04)}
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><i class="fa-solid fa-bitcoin-sign"></i></div>Safex
+    </a>
+    <div class="hamburger" onclick="document.getElementById('nav').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="nav-links" id="nav">
+      <a href="index.html" class="active"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="privacy.html"><i class="fa-solid fa-user-shield"></i> Privacy</a>
+      <a href="terms.html"><i class="fa-solid fa-file-contract"></i> Terms</a>
+      <a href="contact.html"><i class="fa-solid fa-envelope-open-text"></i> Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item"><i class="fa-solid fa-key"></i> Non-Custodial</span>
+    <span class="ticker-item"><i class="fa-solid fa-shield-halved"></i> Your Keys · Your Bitcoin</span>
+    <span class="ticker-item"><i class="fa-solid fa-seedling"></i> 12 / 24-Word Seed Phrase</span>
+    <span class="ticker-item"><i class="fa-brands fa-apple"></i> iOS &amp; Android</span>
+    <span class="ticker-item"><i class="fa-solid fa-wallet"></i> Multiple Wallets</span>
+    <span class="ticker-item"><i class="fa-solid fa-bolt"></i> Instant Send &amp; Receive</span>
+    <span class="ticker-item"><i class="fa-solid fa-user-secret"></i> Zero Tracking · Zero Ads</span>
+    <span class="ticker-item"><i class="fa-solid fa-circle-dollar-to-slot"></i> 100% Free Forever</span>
+    <span class="ticker-item"><i class="fa-solid fa-key"></i> Non-Custodial</span>
+    <span class="ticker-item"><i class="fa-solid fa-shield-halved"></i> Your Keys · Your Bitcoin</span>
+    <span class="ticker-item"><i class="fa-solid fa-seedling"></i> 12 / 24-Word Seed Phrase</span>
+    <span class="ticker-item"><i class="fa-brands fa-apple"></i> iOS &amp; Android</span>
+    <span class="ticker-item"><i class="fa-solid fa-wallet"></i> Multiple Wallets</span>
+    <span class="ticker-item"><i class="fa-solid fa-bolt"></i> Instant Send &amp; Receive</span>
+    <span class="ticker-item"><i class="fa-solid fa-user-secret"></i> Zero Tracking · Zero Ads</span>
+    <span class="ticker-item"><i class="fa-solid fa-circle-dollar-to-slot"></i> 100% Free Forever</span>
+  </div>
+</div>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-eyebrow"><i class="fa-solid fa-bitcoin-sign"></i> Bitcoin-Only · Self-Custodial</div>
+  <h1>The Last Bitcoin Wallet<br>You'll Ever <span class="accent">Need</span></h1>
+  <p class="hero-sub">Take complete control of your Bitcoin. No middlemen, no accounts, no compromise — just pure, private, self-custodial Bitcoin.</p>
+  <div class="hero-cta">
+    <a href="#" class="btn-primary"><i class="fa-brands fa-apple"></i> Download on App Store</a>
+    <a href="#" class="btn-outline" style="color:#fff;border-color:rgba(255,255,255,.2)"><i class="fa-brands fa-google-play"></i> Get on Google Play</a>
+  </div>
+  <div class="hero-badges">
+    <span class="hero-badge-item"><i class="fa-solid fa-check-circle"></i> Non-custodial</span>
+    <span class="hero-badge-item"><i class="fa-solid fa-check-circle"></i> Zero data collected</span>
+    <span class="hero-badge-item"><i class="fa-solid fa-check-circle"></i> 100% Free</span>
+    <span class="hero-badge-item"><i class="fa-solid fa-check-circle"></i> iOS & Android</span>
+  </div>
+  <div class="btc-card">
+    <div class="btc-row">
+      <div class="btc-left">
+        <div class="btc-icon"><i class="fa-brands fa-bitcoin"></i></div>
+        <div>
+          <div class="btc-lbl">Bitcoin · BTC/USD · Live</div>
+          <div class="btc-price-val" id="btcPrice">Loading…</div>
+        </div>
+      </div>
+      <div class="btc-badge badge-up" id="btcBadge">—</div>
+    </div>
+    <div class="btc-chart-wrap"><canvas id="sparkCanvas"></canvas></div>
+    <div class="btc-foot"><span id="btcTime">—</span><span>CoinGecko · 7-day chart</span></div>
+  </div>
+</header>
+
+<!-- Stats -->
+<div class="stats-bar">
+  <div class="stats-grid">
+    <div class="stat-item reveal"><div class="stat-num">100%</div><div class="stat-lbl">Self-Custodial</div></div>
+    <div class="stat-item reveal"><div class="stat-num">0</div><div class="stat-lbl">Data Collected</div></div>
+    <div class="stat-item reveal"><div class="stat-num">∞</div><div class="stat-lbl">Wallets Supported</div></div>
+    <div class="stat-item reveal"><div class="stat-num">Free</div><div class="stat-lbl">Always &amp; Forever</div></div>
+  </div>
+</div>
+
+<!-- Features -->
+<section id="features">
+  <div class="container">
+    <div class="center">
+      <div class="section-tag"><i class="fa-solid fa-sparkles"></i> Features</div>
+      <h2 class="sec-title">Everything you need. Nothing you don't.</h2>
+      <p class="sec-sub">Safex is built around one principle — your Bitcoin, fully under your control. No fluff, no bloat.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fa-solid fa-key"></i></div>
+        <h3>True Self-Custody</h3>
+        <p>Your seed phrase stays on your device — always. No server ever sees your private keys or your funds. You are the bank.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fa-solid fa-seedling"></i></div>
+        <h3>12 / 24-Word Recovery</h3>
+        <p>Industry-standard BIP-39 seed phrase. Restore your full wallet on any compatible app, anytime, anywhere in the world.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fa-solid fa-wallet"></i></div>
+        <h3>Multiple Wallets</h3>
+        <p>Create or import as many wallets as you need. Manage them all from one clean, fast interface — without switching apps.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fa-solid fa-paper-plane"></i></div>
+        <h3>Send &amp; Receive Instantly</h3>
+        <p>Scan a QR code or paste an address. Sending Bitcoin takes seconds. Receiving is as simple as sharing your address.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h3>Live BTC Price</h3>
+        <p>Real-time Bitcoin price and your portfolio value in USD, updated automatically so you're always in the loop.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+        <h3>Full Transaction History</h3>
+        <p>Every incoming and outgoing transaction recorded clearly. Fast access, no delays, always accurate.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fa-solid fa-rotate-left"></i></div>
+        <h3>Easy Wallet Restore</h3>
+        <p>Lost or replaced your phone? Enter your 12 or 24-word seed phrase and your wallet and full balance is back instantly.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fa-solid fa-user-secret"></i></div>
+        <h3>Zero Tracking</h3>
+        <p>No analytics, no ads, no accounts, no KYC. Safex never collects or shares any personal data — by design.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+        <h3>iOS &amp; Android</h3>
+        <p>Native performance on both platforms. Smooth, fast, and optimized for every screen — iPhone, iPad, or Android.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="how-bg">
+  <div class="container">
+    <div class="center">
+      <div class="section-tag"><i class="fa-solid fa-list-ol"></i> How It Works</div>
+      <h2 class="sec-title">Up and running in 60 seconds</h2>
+      <p class="sec-sub">No signup. No ID. No waiting. Open the app and you're holding Bitcoin.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <h3>Download Free</h3>
+        <p>Get Safex from the App Store or Google Play — completely free. No registration, no email, no account of any kind.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">2</div>
+        <h3>Create or Restore</h3>
+        <p>Generate a brand new wallet and save your seed phrase, or restore an existing one using your 12 or 24 recovery words.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">3</div>
+        <h3>Send &amp; Receive</h3>
+        <p>Share your address to receive Bitcoin or scan any QR code to send — your wallet, your rules, your Bitcoin.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Security -->
+<section id="security">
+  <div class="container">
+    <div class="sec-split">
+      <div class="reveal">
+        <div class="section-tag"><i class="fa-solid fa-shield-halved"></i> Security First</div>
+        <h2 class="sec-title">Built for people who take Bitcoin seriously.</h2>
+        <p class="sec-sub">Safex follows Bitcoin best practices end-to-end. Your private keys never leave your device, your identity never enters our system.</p>
+        <a href="#download" class="btn-primary"><i class="fa-solid fa-arrow-down"></i> Get Safex — It's Free</a>
+      </div>
+      <div class="sec-vis reveal">
+        <div class="sec-row">
+          <div class="sec-dot"><i class="fa-solid fa-key"></i></div>
+          <div class="sec-row-text">
+            <h4>Private Keys Stay On Your Device</h4>
+            <p>Keys are generated and stored locally. No server ever touches them — not even ours.</p>
+          </div>
+        </div>
+        <div class="sec-row">
+          <div class="sec-dot"><i class="fa-solid fa-seedling"></i></div>
+          <div class="sec-row-text">
+            <h4>BIP-39 Standard Seed Phrase</h4>
+            <p>12 or 24 recovery words compatible with every major Bitcoin wallet in existence.</p>
+          </div>
+        </div>
+        <div class="sec-row">
+          <div class="sec-dot"><i class="fa-solid fa-eye-slash"></i></div>
+          <div class="sec-row-text">
+            <h4>No Accounts · No KYC · No Tracking</h4>
+            <p>We don't know who you are. Open the app, use Bitcoin. That's it.</p>
+          </div>
+        </div>
+        <div class="sec-row">
+          <div class="sec-dot"><i class="fa-solid fa-rotate-left"></i></div>
+          <div class="sec-row-text">
+            <h4>Forever Recoverable</h4>
+            <p>As long as you keep your seed phrase safe, your Bitcoin is always recoverable — on any device, forever.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="reviews-bg" id="reviews">
+  <div class="container">
+    <div class="center">
+      <div class="section-tag"><i class="fa-solid fa-star"></i> User Reviews</div>
+      <h2 class="sec-title">Loved by Bitcoin users worldwide</h2>
+      <p class="sec-sub">Thousands of users trust Safex to keep their Bitcoin safe, private, and always accessible.</p>
+    </div>
+    <div class="reviews-grid">
+
+      <div class="review-card reveal">
+        <div class="review-top">
+          <img class="review-avatar" src="https://ui-avatars.com/api/?name=Michael+Chen&background=f7931a&color=000&bold=true&size=80" alt="Michael Chen"/>
+          <div><div class="review-name">Michael Chen</div><div class="review-loc">San Francisco, USA</div></div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Finally a Bitcoin wallet that doesn't ask for my ID. No KYC, no tracking, no nonsense. I've been searching for something like this for years."</div>
+        <div class="review-source"><i class="fa-brands fa-apple"></i> App Store Review</div>
+      </div>
+
+      <div class="review-card reveal">
+        <img class="review-avatar" src="https://ui-avatars.com/api/?name=Sarah+Al-Rashid&background=1a3a6b&color=fff&bold=true&size=80" alt="Sarah Al-Rashid" style="display:none"/>
+        <div class="review-top">
+          <img class="review-avatar" src="https://ui-avatars.com/api/?name=Sarah+Al-Rashid&background=1a3a6b&color=fff&bold=true&size=80" alt="Sarah Al-Rashid"/>
+          <div><div class="review-name">Sarah Al-Rashid</div><div class="review-loc">Dubai, UAE</div></div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"The cleanest Bitcoin wallet I've ever used. Seed phrase backup works perfectly and the interface is so intuitive. Highly recommend."</div>
+        <div class="review-source"><i class="fa-brands fa-apple"></i> App Store Review</div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-top">
+          <img class="review-avatar" src="https://ui-avatars.com/api/?name=James+Okonkwo&background=166534&color=fff&bold=true&size=80" alt="James Okonkwo"/>
+          <div><div class="review-name">James Okonkwo</div><div class="review-loc">Lagos, Nigeria</div></div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Safex saved me when I lost my old phone. Restored my full wallet in under 30 seconds with just my seed phrase. Incredible."</div>
+        <div class="review-source"><i class="fa-brands fa-google-play"></i> Google Play Review</div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-top">
+          <img class="review-avatar" src="https://ui-avatars.com/api/?name=Emma+Muller&background=7c3aed&color=fff&bold=true&size=80" alt="Emma Müller"/>
+          <div><div class="review-name">Emma Müller</div><div class="review-loc">Berlin, Germany</div></div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Privacy-first and truly non-custodial. This is how a Bitcoin wallet should be built. Simple, fast, and I'm fully in control."</div>
+        <div class="review-source"><i class="fa-brands fa-apple"></i> App Store Review</div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-top">
+          <img class="review-avatar" src="https://ui-avatars.com/api/?name=Carlos+Rivera&background=b45309&color=fff&bold=true&size=80" alt="Carlos Rivera"/>
+          <div><div class="review-name">Carlos Rivera</div><div class="review-loc">Mexico City, Mexico</div></div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"I run 3 different wallets for different purposes — all in one app. The multiple wallet feature is a game changer. Love it."</div>
+        <div class="review-source"><i class="fa-brands fa-google-play"></i> Google Play Review</div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-top">
+          <img class="review-avatar" src="https://ui-avatars.com/api/?name=Yuki+Tanaka&background=0e7490&color=fff&bold=true&size=80" alt="Yuki Tanaka"/>
+          <div><div class="review-name">Yuki Tanaka</div><div class="review-loc">Tokyo, Japan</div></div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Fast, simple, beautiful design. The live Bitcoin price update is really handy. Best free wallet on the App Store without question."</div>
+        <div class="review-source"><i class="fa-brands fa-apple"></i> App Store Review</div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-top">
+          <img class="review-avatar" src="https://ui-avatars.com/api/?name=Ahmed+Hassan&background=b91c1c&color=fff&bold=true&size=80" alt="Ahmed Hassan"/>
+          <div><div class="review-name">Ahmed Hassan</div><div class="review-loc">Cairo, Egypt</div></div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"I tried 6 different Bitcoin wallets over the years. Safex is the only one I kept. Zero bloat, instant setup, works perfectly."</div>
+        <div class="review-source"><i class="fa-brands fa-apple"></i> App Store Review</div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-top">
+          <img class="review-avatar" src="https://ui-avatars.com/api/?name=Isabella+Johnson&background=0f766e&color=fff&bold=true&size=80" alt="Isabella Johnson"/>
+          <div><div class="review-name">Isabella Johnson</div><div class="review-loc">New York, USA</div></div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Finally deleted Coinbase. With Safex I actually own my Bitcoin. Totally free, no hidden fees, no ads. This is the real deal."</div>
+        <div class="review-source"><i class="fa-brands fa-apple"></i> App Store Review</div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-top">
+          <img class="review-avatar" src="https://ui-avatars.com/api/?name=Lucas+Santos&background=065f46&color=fff&bold=true&size=80" alt="Lucas Santos"/>
+          <div><div class="review-name">Lucas Santos</div><div class="review-loc">São Paulo, Brazil</div></div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Setup took 2 minutes. My 12-word seed phrase is all I need to access my Bitcoin anywhere. Simple, secure, brilliant."</div>
+        <div class="review-source"><i class="fa-brands fa-google-play"></i> Google Play Review</div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-top">
+          <img class="review-avatar" src="https://ui-avatars.com/api/?name=Noor+Al-Khalidi&background=92400e&color=fff&bold=true&size=80" alt="Noor Al-Khalidi"/>
+          <div><div class="review-name">Noor Al-Khalidi</div><div class="review-loc">Riyadh, Saudi Arabia</div></div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Fast and private. My keys stay on my phone, no one else has access. Exactly the kind of wallet I was looking for."</div>
+        <div class="review-source"><i class="fa-brands fa-apple"></i> App Store Review</div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-top">
+          <img class="review-avatar" src="https://ui-avatars.com/api/?name=Raj+Patel&background=1e3a5f&color=fff&bold=true&size=80" alt="Raj Patel"/>
+          <div><div class="review-name">Raj Patel</div><div class="review-loc">London, UK</div></div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"The QR scanner works flawlessly. Sending Bitcoin to anyone is now effortless. I've recommended Safex to my entire group."</div>
+        <div class="review-source"><i class="fa-brands fa-google-play"></i> Google Play Review</div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-top">
+          <img class="review-avatar" src="https://ui-avatars.com/api/?name=Thomas+Bergmann&background=312e81&color=fff&bold=true&size=80" alt="Thomas Bergmann"/>
+          <div><div class="review-name">Thomas Bergmann</div><div class="review-loc">Amsterdam, Netherlands</div></div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Non-custodial is the only correct approach to Bitcoin. Safex gets it right. Clean UI, rock-solid performance, zero compromise."</div>
+        <div class="review-source"><i class="fa-brands fa-apple"></i> App Store Review</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Download CTA -->
+<section class="cta-section" id="download">
+  <div class="container">
+    <div class="section-tag" style="background:rgba(247,147,26,.15);border-color:rgba(247,147,26,.3);margin:0 auto 20px;width:fit-content">
+      <i class="fa-solid fa-download"></i> Free Download
+    </div>
+    <h2>Own Your Bitcoin.<br><span>Start Today.</span></h2>
+    <p>Join thousands of users who trust Safex to keep their Bitcoin safe, private, and always accessible.</p>
+    <div class="store-row">
+      <a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store"/></a>
+      <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play"/></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="index.html" class="foot-logo">
+    <div class="logo-icon"><i class="fa-solid fa-bitcoin-sign"></i></div>Safex
+  </a>
+  <div class="foot-links">
+    <a href="privacy.html"><i class="fa-solid fa-user-shield"></i> Privacy</a><span>·</span>
+    <a href="terms.html"><i class="fa-solid fa-file-contract"></i> Terms</a><span>·</span>
+    <a href="contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+  </div>
+  <div class="foot-copy">© 2025 A BOUQUET OF BALLOONS LLC · Bitcoin-only · Non-custodial · www.safex.club</div>
+</footer>
+
+<script>
+  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}})},{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  let chart=null;
+  async function loadBTC(){
+    try{
+      const[p,c]=await Promise.all([
+        fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true').then(r=>r.json()),
+        fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=7&interval=daily').then(r=>r.json())
+      ]);
+      const price=p.bitcoin.usd, ch=p.bitcoin.usd_24h_change, up=ch>=0;
+      const prices=c.prices.map(x=>x[1]);
+      document.getElementById('btcPrice')='$'+price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+      const b=document.getElementById('btcBadge');
+      b.textContent=(up?'▲ +':'▼ ')+Math.abs(ch).toFixed(2)+'%';
+      b.className='btc-badge '+(up?'badge-up':'badge-down');
+      document.getElementById('btcTime').textContent='Updated '+new Date().toLocaleTimeString();
+      const ctx=document.getElementById('sparkCanvas').getContext('2d');
+      const g=ctx.createLinearGradient(0,0,0,56);
+      g.addColorStop(0,up?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)');
+      g.addColorStop(1,'rgba(0,0,0,0)');
+      if(chart)chart.destroy();
+      chart=new Chart(ctx,{type:'line',data:{labels:prices.map((_,i)=>i),datasets:[{data:prices,borderColor:up?'#22c55e':'#ef4444',borderWidth:2,fill:true,backgroundColor:g,tension:.4,pointRadius:0}]},options:{plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:500}}});
+    }catch(e){document.getElementById('btcPrice').textContent='—'}
+  }
+  loadBTC();setInterval(loadBTC,60000);
+</script>
+</body>
+</html>
